@@ -13,6 +13,16 @@ enum SpacedRepetition {
     }
 
     static func outcome(
+        currentLevel: Int,
+        isCorrect: Bool,
+        practicedAt date: Date = Date(),
+        calendar: Calendar = .current
+    ) -> Outcome {
+        let word = VocabularyWord(id: 0, word: "", listNumber: 0, level: currentLevel)
+        return outcome(currentWord: word, isCorrect: isCorrect, practicedAt: date, calendar: calendar)
+    }
+
+    static func outcome(
         currentWord: VocabularyWord?,
         isCorrect: Bool,
         practicedAt date: Date = Date(),
@@ -87,28 +97,3 @@ enum SpacedRepetition {
             lapses: newLapses
         )
     }
-
-    static func sessionCandidates(
-        from words: [VocabularyWord],
-        selectedList: Int,
-        onlyDifficult: Bool,
-        on date: Date = Date(),
-        calendar: Calendar = .current,
-        shuffled: Bool = true
-    ) -> [VocabularyWord] {
-        let filtered = words.filter { word in
-            (selectedList == 0 || word.listNumber == selectedList)
-                && (!onlyDifficult || word.isDifficult)
-        }
-        let today = calendar.startOfDay(for: date)
-        let due = filtered.filter { word in
-            if SurpriseTest.shouldSurprise(word: word, on: date, calendar: calendar) {
-                return true
-            }
-            guard let nextReviewDate = word.nextReviewDate else { return true }
-            return calendar.startOfDay(for: nextReviewDate) <= today
-        }
-        let candidates = due.isEmpty ? filtered.filter { $0.level < 5 } : due
-        return shuffled ? candidates.shuffled() : candidates
-    }
-}
