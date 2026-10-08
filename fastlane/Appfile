@@ -1,0 +1,3 @@
+app_identifier "com.example.WordFlow500"
+team_id "" # оставить пустым, если используется automatic signing
+its_team_id ""

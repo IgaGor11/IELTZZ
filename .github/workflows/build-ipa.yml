@@ -1,0 +1,42 @@
+name: Build IPA
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer || true
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+
+      - name: Install dependencies
+        run: bundle install
+
+      - name: Build AdHoc IPA
+        run: bundle exec fastlane build_adhoc_plist
+
+      - name: Upload IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: IELTZZ-IPA
+          path: build/IELTZZ-AdHoc.ipa
+
+      - name: Upload dSYMs (if any)
+        uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: IELTZZ-dSYMs
+          path: build/*.dSYM.zip
+          if-no-files-found: ignore

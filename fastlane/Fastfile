@@ -1,0 +1,33 @@
+default_platform(:ios)
+
+platform :ios do
+  desc "Build AdHoc IPA"
+  lane :build_adhoc do
+    build_app(
+      scheme: "WordFlow500",
+      project: "WordFlow500.xcodeproj",
+      configuration: "Release",
+      export_method: "ad-hoc",
+      export_options: {
+        method: "ad-hoc",
+        signingStyle: "automatic"
+      },
+      clean: true,
+      output_directory: "build",
+      output_name: "IELTZZ-AdHoc.ipa"
+    )
+  end
+
+  desc "Build AdHoc IPA using ExportOptions.plist"
+  lane :build_adhoc_plist do
+    build_app(
+      scheme: "WordFlow500",
+      project: "WordFlow500.xcodeproj",
+      configuration: "Release",
+      export_options: "Distribution/ExportOptions-AdHoc.plist",
+      clean: true,
+      output_directory: "build",
+      output_name: "IELTZZ-AdHoc.ipa"
+    )
+  end
+end
