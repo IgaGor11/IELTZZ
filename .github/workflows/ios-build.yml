@@ -21,30 +21,14 @@ jobs:
         run: |
           echo "=== /Applications/ ==="
           ls -la /Applications/ | grep -i xcode || true
-          echo "=== xcode-select -print-path ==="
-          xcode-select -print-path || true
           echo "=== xcodebuild -version ==="
           xcodebuild -version
-          echo "=== Default xcodebuild path ==="
-          which xcodebuild
-
-
-      - name: Select Xcode
-        run: |
-          # Try to find Xcode 26.6+
-          if [ -d "/Applications/Xcode_26.6.app/Contents/Developer" ]; then
-            sudo xcode-select -s /Applications/Xcode_26.6.app/Contents/Developer || true
-          elif [ -d "/Applications/Xcode_16.0.app/Contents/Developer" ]; then
-            sudo xcode-select -s /Applications/Xcode_16.0.app/Contents/Developer || true
-          elif [ -d "/Applications/Xcode.app/Contents/Developer" ]; then
-            sudo xcode-select -s /Applications/Xcode.app/Contents/Developer || true
-          fi
-          echo "Selected: $(xcode-select -print-path)"
 
 
       - name: Build Archive
         run: |
-          xcodebuild -project WordFlow500.xcodeproj \
+          /Applications/Xcode_26.6.app/Contents/Developer/usr/bin/xcodebuild \
+            -project WordFlow500.xcodeproj \
             -scheme WordFlow500 \
             -sdk iphoneos \
             -configuration Release \
@@ -58,7 +42,8 @@ jobs:
 
       - name: Export IPA
         run: |
-          xcodebuild -exportArchive \
+          /Applications/Xcode_26.6.app/Contents/Developer/usr/bin/xcodebuild \
+            -exportArchive \
             -archivePath $RUNNER_TEMP/IELTZZ.xcarchive \
             -exportPath $RUNNER_TEMP/build \
             -allowProvisioningUpdates \
