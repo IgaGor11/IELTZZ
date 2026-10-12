@@ -29,18 +29,39 @@ jobs:
       #     flutter build ios --no-codesign
 
 
-      - name: Build unsigned Archive (no code signing required)
+      - name: Build unsigned Archive (with retry)
+        env:
+          MAX_RETRIES: 3
         run: |
-          xcodebuild -project WordFlow500.xcodeproj \
-            -scheme WordFlow500 \
-            -sdk iphoneos \
-            -configuration Release \
-            -archivePath $RUNNER_TEMP/IELTZZ.xcarchive \
-            -allowProvisioningUpdates \
-            CODE_SIGNING_ALLOWED=NO \
-            CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGN_STYLE=Manual \
-            CODE_SIGN_IDENTITY=""
+          set -e
+          ATTEMPT=0
+          until [ $ATTEMPT -ge $MAX_RETRIES ]; do
+            ATTEMPT=$((ATTEMPT + 1))
+            echo "--- Попытка сборки $ATTEMPT из $MAX_RETRIES ---"
+            xcodebuild -project WordFlow500.xcodeproj \
+              -scheme WordFlow500 \
+              -sdk iphoneos \
+              -configuration Release \
+              -archivePath $RUNNER_TEMP/IELTZZ.xcarchive \
+              -allowProvisioningUpdates \
+              CODE_SIGNING_ALLOWED=NO \
+              CODE_SIGNING_REQUIRED=NO \
+              CODE_SIGN_STYLE=Manual \
+              CODE_SIGN_IDENTITY="" \
+              SKIP_INSTALL=YES \
+              BUILD_LIBRARY_FOR_DISTRIBUTION=NO \
+              || {
+                if [ $ATTEMPT -lt $MAX_RETRIES ]; then
+                  echo "Сборка упала, повторяем через 30 сек..."
+                  sleep 30
+                  continue
+                else
+                  echo "Сборка не удалась после $MAX_RETRIES попыток"
+                  exit 1
+                fi
+              }
+            # Если达到这里 — сборка прошла успешно, выходим из цикла
+            break
 
 
       - name: Export unsigned IPA
