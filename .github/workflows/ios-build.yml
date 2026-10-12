@@ -86,7 +86,7 @@ jobs:
 
 
       - name: Upload IPA Artifact
-        uses: actions/actions-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: iOS-ipa
           path: ${{ runner.temp }}/build/*.ipa
