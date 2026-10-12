@@ -9,12 +9,16 @@ on:
 
 jobs:
   build:
-    runs-on: macos-14
+    runs-on: macos-latest
 
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+
+      - name: Select Xcode 26.6
+        run: sudo xcode-select -s /Applications/Xcode-16.0.app/Contents/Developer || sudo xcode-select -s /Applications/Xcode.app/Contents/Developer || xcode-select -print-path
 
 
       - name: Build Archive
@@ -24,7 +28,11 @@ jobs:
             -sdk iphoneos \
             -configuration Release \
             -archivePath $RUNNER_TEMP/IELTZZ.xcarchive \
-            -allowProvisioningUpdates
+            -allowProvisioningUpdates \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_STYLE=Manual \
+            CODE_SIGN_IDENTITY=""
 
 
       - name: Export IPA
@@ -32,4 +40,14 @@ jobs:
           xcodebuild -exportArchive \
             -archivePath $RUNNER_TEMP/IELTZZ.xcarchive \
             -exportPath $RUNNER_TEMP/build \
-            -allowProvisioningUpdates
+            -allowProvisioningUpdates \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_STYLE=Manual
+
+
+      - name: Upload IPA Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: iOS-ipa
+          path: $RUNNER_TEMP/build/*.ipa
