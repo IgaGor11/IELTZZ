@@ -10,7 +10,7 @@ on:
 jobs:
   build:
     # Важно: Сборка iOS возможна только на macOS
-    runs-on: macos-14 
+    runs-on: macos-latest 
 
 
     steps:
@@ -19,7 +19,7 @@ jobs:
 
 
       - name: Select Xcode version
-        run: sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+        run: xcode-select -print-path || true
 
 
       # (Опционально) Шаг для Flutter/React Native проектов:
