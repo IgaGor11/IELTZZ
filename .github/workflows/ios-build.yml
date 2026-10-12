@@ -19,7 +19,7 @@ jobs:
 
 
       - name: Select Xcode version
-        run: xcode-select -s /Applications/Xcode.app/Contents/Developer
+        run: sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
 
 
       # (Опционально) Шаг для Flutter/React Native проектов:
