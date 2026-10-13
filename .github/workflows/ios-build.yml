@@ -9,6 +9,9 @@ on:
 
 jobs:
   build:
+    # Важно: Сборка iOS возможна только на macOS.
+    # macos-latest = Xcode 26.6, нужен для project format 70
+    # (на macos-14 стоит Xcode 15.4 -> error 74: future project file format)
     runs-on: macos-latest
 
 
@@ -17,43 +20,83 @@ jobs:
         uses: actions/checkout@v4
 
 
-      - name: List Xcode versions
+      - name: Select Xcode version
         run: |
-          echo "=== /Applications/ ==="
-          ls -la /Applications/ | grep -i xcode || true
-          echo "=== xcodebuild -version ==="
+          sudo xcode-select -s /Applications/Xcode_26.6.app/Contents/Developer 2>/dev/null || sudo xcode-select -s /Applications/Xcode.app/Contents/Developer 2>/dev/null || true
           xcodebuild -version
-          echo "=== xcode-select -print-path ==="
-          xcode-select -print-path
+          xcrun --sdk iphoneos --show-sdk-version || true
 
 
-      - name: Try to build with default xcodebuild
+      # (Опционально) Шаг для Flutter/React Native проектов:
+      # - name: Install Flutter / Node.js dependencies
+      #   run: |
+      #     flutter pub get
+      #     flutter build ios --no-codesign
+
+
+      - name: Build Archive (unsigned)
         run: |
-          xcodebuild -project WordFlow500.xcodeproj \
-            -scheme WordFlow500 \
-            -sdk iphoneos \
-            -configuration Release \
-            -archivePath $RUNNER_TEMP/IELTZZ.xcarchive \
-            -allowProvisioningUpdates \
-            CODE_SIGNING_ALLOWED=NO \
-            CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGN_STYLE=Manual \
-            CODE_SIGN_IDENTITY=""
+          set -o pipefail
+          mkdir -p "$RUNNER_TEMP/build"
+          for ATTEMPT in 1 2 3; do
+            echo "--- Попытка сборки $ATTEMPT из 3 ---"
+            rm -rf "$RUNNER_TEMP/build/unsigned" "$RUNNER_TEMP/Payload" "$RUNNER_TEMP/build/IELTZZ-unsigned.ipa"
+            mkdir -p "$RUNNER_TEMP/build/unsigned" "$RUNNER_TEMP/build"
+            if xcodebuild \
+              -project WordFlow500.xcodeproj \
+              -scheme WordFlow500 \
+              -sdk iphoneos \
+              -configuration Release \
+              CODE_SIGNING_ALLOWED=NO \
+              CODE_SIGNING_REQUIRED=NO \
+              AD_HOC_CODE_SIGNING_ALLOWED=YES \
+              CODE_SIGN_STYLE=Manual \
+              CODE_SIGN_IDENTITY="" \
+              ONLY_ACTIVE_ARCH=NO \
+              SKIP_INSTALL=YES \
+              BUILD_LIBRARY_FOR_DISTRIBUTION=NO \
+              build CONFIGURATION_BUILD_DIR="$RUNNER_TEMP/build/unsigned" 2>&1 | tee "$RUNNER_TEMP/build/unsigned-build.log"; then
+              echo "Сборка прошла на попытке $ATTEMPT"
+              break
+            fi
+            echo "Попытка $ATTEMPT упала (часто: Xcode build system has crashed) — ждём 30 сек и повторяем"
+            sleep 30
+            if [ "$ATTEMPT" = "3" ]; then
+              echo "Сборка не удалась после 3 попыток"
+              tail -n 100 "$RUNNER_TEMP/build/unsigned-build.log" || true
+              exit 1
+            fi
+          done
+          ls -lh "$RUNNER_TEMP/build/unsigned/" || true
+          test -d "$RUNNER_TEMP/build/unsigned/WordFlow500.app"
 
 
-      - name: Export IPA
+      - name: Export IPA (Payload -> zip, без подписи)
         run: |
-          xcodebuild -exportArchive \
-            -archivePath $RUNNER_TEMP/IELTZZ.xcarchive \
-            -exportPath $RUNNER_TEMP/build \
-            -allowProvisioningUpdates \
-            CODE_SIGNING_ALLOWED=NO \
-            CODE_SIGNING_REQUIRED=NO \
-            CODE_STYLE=Manual
+          set -e
+          cd "$RUNNER_TEMP"
+          rm -rf Payload
+          mkdir -p Payload build
+          cp -R "build/unsigned/WordFlow500.app" "Payload/"
+          xattr -cr Payload || true
+          rm -f build/IELTZZ-unsigned.ipa
+          zip -r build/IELTZZ-unsigned.ipa Payload > /dev/null
+          rm -rf Payload
+          ls -lh build/
+          unzip -l build/IELTZZ-unsigned.ipa | head -n 20
 
 
       - name: Upload IPA Artifact
         uses: actions/upload-artifact@v4
         with:
           name: iOS-ipa
-          path: $RUNNER_TEMP/build/*.ipa
+          path: ${{ runner.temp }}/build/*.ipa
+
+
+      - name: Upload build log (always)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: ${{ runner.temp }}/build/unsigned-build.log
+          if-no-files-found: ignore

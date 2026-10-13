@@ -1,7 +1,6 @@
 import Foundation
 import Combine
 
-@MainActor
 final class AICache: ObservableObject {
     private var storage: [String: Data] = [:]
 

@@ -1,7 +1,6 @@
 import Foundation
 import Combine
 
-@MainActor
 final class AIEnricher: ObservableObject {
     private let client: AIAPIClient
     private let budget: AIBudget
