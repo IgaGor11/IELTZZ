@@ -1,0 +1,120 @@
+ExecuteExternalTool /Applications/Xcode_16.app/Contents/Developer/usr/bin/actool --version --output-format xml1
+
+ExecuteExternalTool /Applications/Xcode_16.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc --version
+
+ExecuteExternalTool /Applications/Xcode_16.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld -version_details
+
+Build description signature: 3e083ad43bdebe63d28f1dc3b3980cc4
+Build description path: /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/XCBuildData/3e083ad43bdebe63d28f1dc3b3980cc4.xcbuilddata
+CreateBuildDirectory /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Products
+    cd /Users/runner/work/IELTZZ/IELTZZ/WordFlow500.xcodeproj
+    builtin-create-build-directory /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Products
+
+ClangStatCache /Applications/Xcode_16.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode_16.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk /Users/runner/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphoneos18.0-22A3362-ecbf2746db86eb790eafe45896842e4a.sdkstatcache
+    cd /Users/runner/work/IELTZZ/IELTZZ/WordFlow500.xcodeproj
+    /Applications/Xcode_16.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode_16.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk -o /Users/runner/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphoneos18.0-22A3362-ecbf2746db86eb790eafe45896842e4a.sdkstatcache
+
+CreateBuildDirectory /Users/runner/work/_temp/build/unsigned
+    cd /Users/runner/work/IELTZZ/IELTZZ/WordFlow500.xcodeproj
+    builtin-create-build-directory /Users/runner/work/_temp/build/unsigned
+
+CreateBuildDirectory /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex
+    cd /Users/runner/work/IELTZZ/IELTZZ/WordFlow500.xcodeproj
+    builtin-create-build-directory /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex
+
+WriteAuxiliaryFile /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500-ba58a904299fdf668e62b34601e85df2-VFS-iphoneos/all-product-headers.yaml
+    cd /Users/runner/work/IELTZZ/IELTZZ/WordFlow500.xcodeproj
+    write-file /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500-ba58a904299fdf668e62b34601e85df2-VFS-iphoneos/all-product-headers.yaml
+
+CreateBuildDirectory /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/EagerLinkingTBDs/Release-iphoneos
+    cd /Users/runner/work/IELTZZ/IELTZZ/WordFlow500.xcodeproj
+    builtin-create-build-directory /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/EagerLinkingTBDs/Release-iphoneos
+
+WriteAuxiliaryFile /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/WordFlow500.hmap (in target 'WordFlow500' from project 'WordFlow500')
+    cd /Users/runner/work/IELTZZ/IELTZZ
+    write-file /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/WordFlow500.hmap
+
+WriteAuxiliaryFile /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/WordFlow500.DependencyMetadataFileList (in target 'WordFlow500' from project 'WordFlow500')
+    cd /Users/runner/work/IELTZZ/IELTZZ
+    write-file /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/WordFlow500.DependencyMetadataFileList
+
+WriteAuxiliaryFile /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/WordFlow500-project-headers.hmap (in target 'WordFlow500' from project 'WordFlow500')
+    cd /Users/runner/work/IELTZZ/IELTZZ
+    write-file /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/WordFlow500-project-headers.hmap
+
+WriteAuxiliaryFile /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/WordFlow500-own-target-headers.hmap (in target 'WordFlow500' from project 'WordFlow500')
+    cd /Users/runner/work/IELTZZ/IELTZZ
+    write-file /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/WordFlow500-own-target-headers.hmap
+
+WriteAuxiliaryFile /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/WordFlow500-generated-files.hmap (in target 'WordFlow500' from project 'WordFlow500')
+    cd /Users/runner/work/IELTZZ/IELTZZ
+    write-file /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/WordFlow500-generated-files.hmap
+
+WriteAuxiliaryFile /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/WordFlow500-all-target-headers.hmap (in target 'WordFlow500' from project 'WordFlow500')
+    cd /Users/runner/work/IELTZZ/IELTZZ
+    write-file /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/WordFlow500-all-target-headers.hmap
+
+WriteAuxiliaryFile /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/WordFlow500-all-non-framework-target-headers.hmap (in target 'WordFlow500' from project 'WordFlow500')
+    cd /Users/runner/work/IELTZZ/IELTZZ
+    write-file /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/WordFlow500-all-non-framework-target-headers.hmap
+
+WriteAuxiliaryFile /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/Objects-normal/arm64/WordFlow500_const_extract_protocols.json (in target 'WordFlow500' from project 'WordFlow500')
+    cd /Users/runner/work/IELTZZ/IELTZZ
+    write-file /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/Objects-normal/arm64/WordFlow500_const_extract_protocols.json
+
+WriteAuxiliaryFile /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/Objects-normal/arm64/WordFlow500.SwiftFileList (in target 'WordFlow500' from project 'WordFlow500')
+    cd /Users/runner/work/IELTZZ/IELTZZ
+    write-file /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/Objects-normal/arm64/WordFlow500.SwiftFileList
+
+WriteAuxiliaryFile /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/Objects-normal/arm64/WordFlow500.SwiftConstValuesFileList (in target 'WordFlow500' from project 'WordFlow500')
+    cd /Users/runner/work/IELTZZ/IELTZZ
+    write-file /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/Objects-normal/arm64/WordFlow500.SwiftConstValuesFileList
+
+WriteAuxiliaryFile /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/Objects-normal/arm64/WordFlow500.LinkFileList (in target 'WordFlow500' from project 'WordFlow500')
+    cd /Users/runner/work/IELTZZ/IELTZZ
+    write-file /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/Objects-normal/arm64/WordFlow500.LinkFileList
+
+WriteAuxiliaryFile /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/Objects-normal/arm64/WordFlow500-OutputFileMap.json (in target 'WordFlow500' from project 'WordFlow500')
+    cd /Users/runner/work/IELTZZ/IELTZZ
+    write-file /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/Objects-normal/arm64/WordFlow500-OutputFileMap.json
+
+MkDir /Users/runner/work/_temp/build/unsigned/WordFlow500.app (in target 'WordFlow500' from project 'WordFlow500')
+    cd /Users/runner/work/IELTZZ/IELTZZ
+    /bin/mkdir -p /Users/runner/work/_temp/build/unsigned/WordFlow500.app
+
+GenerateAssetSymbols /Users/runner/work/IELTZZ/IELTZZ/WordFlow500/Resources/Assets.xcassets (in target 'WordFlow500' from project 'WordFlow500')
+    cd /Users/runner/work/IELTZZ/IELTZZ
+    /Applications/Xcode_16.app/Contents/Developer/usr/bin/actool --output-format human-readable-text --notices --warnings --export-dependency-info /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/assetcatalog_dependencies --output-partial-info-plist /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/assetcatalog_generated_info.plist --app-icon AppIcon --accent-color AccentColor --compress-pngs --enable-on-demand-resources YES --development-region ru --target-device iphone --target-device ipad --minimum-deployment-target 17.0 --platform iphoneos --compile /Users/runner/work/_temp/build/unsigned/WordFlow500.app /Users/runner/work/IELTZZ/IELTZZ/WordFlow500/Resources/Assets.xcassets --bundle-identifier com.example.WordFlow500 --generate-swift-asset-symbols /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/DerivedSources/GeneratedAssetSymbols.swift --generate-objc-asset-symbols /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/DerivedSources/GeneratedAssetSymbols.h --generate-asset-symbol-index /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/DerivedSources/GeneratedAssetSymbols-Index.plist
+/* com.apple.actool.compilation-results */
+/Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/DerivedSources/GeneratedAssetSymbols-Index.plist
+/Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/DerivedSources/GeneratedAssetSymbols.h
+/Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/DerivedSources/GeneratedAssetSymbols.swift
+
+
+CpResource /Users/runner/work/_temp/build/unsigned/WordFlow500.app/PrivacyInfo.xcprivacy /Users/runner/work/IELTZZ/IELTZZ/WordFlow500/Resources/PrivacyInfo.xcprivacy (in target 'WordFlow500' from project 'WordFlow500')
+    cd /Users/runner/work/IELTZZ/IELTZZ
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/runner/work/IELTZZ/IELTZZ/WordFlow500/Resources/PrivacyInfo.xcprivacy /Users/runner/work/_temp/build/unsigned/WordFlow500.app
+
+CompileAssetCatalog /Users/runner/work/_temp/build/unsigned/WordFlow500.app /Users/runner/work/IELTZZ/IELTZZ/WordFlow500/Resources/Assets.xcassets (in target 'WordFlow500' from project 'WordFlow500')
+    cd /Users/runner/work/IELTZZ/IELTZZ
+    /Applications/Xcode_16.app/Contents/Developer/usr/bin/actool --output-format human-readable-text --notices --warnings --export-dependency-info /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/assetcatalog_dependencies --output-partial-info-plist /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/assetcatalog_generated_info.plist --app-icon AppIcon --accent-color AccentColor --compress-pngs --enable-on-demand-resources YES --development-region ru --target-device iphone --target-device ipad --minimum-deployment-target 17.0 --platform iphoneos --compile /Users/runner/work/_temp/build/unsigned/WordFlow500.app /Users/runner/work/IELTZZ/IELTZZ/WordFlow500/Resources/Assets.xcassets
+/* com.apple.actool.errors */
+/Users/runner/work/IELTZZ/IELTZZ/WordFlow500/Resources/Assets.xcassets: error: No simulator runtime version from [<DVTBuildVersion 22F77>, <DVTBuildVersion 22G86>, <DVTBuildVersion 23A8464>, <DVTBuildVersion 23B86>, <DVTBuildVersion 23C54>] available to use with iphonesimulator SDK version <DVTBuildVersion 22A3362>
+/* com.apple.actool.compilation-results */
+/Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/assetcatalog_generated_info.plist
+/Users/runner/work/_temp/build/unsigned/WordFlow500.app/AppIcon60x60@2x.png
+/Users/runner/work/_temp/build/unsigned/WordFlow500.app/AppIcon76x76@2x~ipad.png
+
+
+SwiftDriver WordFlow500 normal arm64 com.apple.xcode.tools.swift.compiler (in target 'WordFlow500' from project 'WordFlow500')
+    cd /Users/runner/work/IELTZZ/IELTZZ
+    builtin-SwiftDriver -- /Applications/Xcode_16.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name WordFlow500 -O -enforce-exclusivity\=checked @/Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/Objects-normal/arm64/WordFlow500.SwiftFileList -enable-bare-slash-regex -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode_16.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk -target arm64-apple-ios17.0 -g -module-cache-path /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -Xfrontend -serialize-debugging-options -profile-coverage-mapping -profile-generate -swift-version 5 -I /Users/runner/work/_temp/build/unsigned -F /Users/runner/work/_temp/build/unsigned -emit-localized-strings -emit-localized-strings-path /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/Objects-normal/arm64 -c -j3 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /Users/runner/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphoneos18.0-22A3362-ecbf2746db86eb790eafe45896842e4a.sdkstatcache -output-file-map /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/Objects-normal/arm64/WordFlow500-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/Objects-normal/arm64/WordFlow500.swiftmodule -validate-clang-modules-once -clang-build-session-file /Users/runner/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Session.modulevalidation -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/Objects-normal/arm64/WordFlow500_const_extract_protocols.json -Xcc -iquote -Xcc /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/WordFlow500-generated-files.hmap -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/WordFlow500-own-target-headers.hmap -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/WordFlow500-all-target-headers.hmap -Xcc -iquote -Xcc /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/WordFlow500-project-headers.hmap -Xcc -I/Users/runner/work/_temp/build/unsigned/include -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/DerivedSources-normal/arm64 -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/DerivedSources/arm64 -Xcc -I/Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/DerivedSources -emit-objc-header -emit-objc-header-path /Users/runner/Library/Developer/Xcode/DerivedData/WordFlow500-avnlpnwqibmfkggtgjzxdzuwfcql/Build/Intermediates.noindex/WordFlow500.build/Release-iphoneos/WordFlow500.build/Objects-normal/arm64/WordFlow500-Swift.h -working-directory /Users/runner/work/IELTZZ/IELTZZ -experimental-emit-module-separately -disable-cmo
+
+note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'WordFlow500' from project 'WordFlow500')
+** BUILD FAILED **
+
+
+The following build commands failed:
+	CompileAssetCatalog /Users/runner/work/_temp/build/unsigned/WordFlow500.app /Users/runner/work/IELTZZ/IELTZZ/WordFlow500/Resources/Assets.xcassets (in target 'WordFlow500' from project 'WordFlow500')
+	Building project WordFlow500 with scheme WordFlow500 and configuration Release
+(2 failures)
