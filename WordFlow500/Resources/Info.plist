@@ -22,6 +22,10 @@
     <string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.education</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Микрофон нужен для режима Speaking Booster: произнесите слово в контексте.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Распознавание речи нужно, чтобы проверить произнесённую фразу в Speaking Booster.</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSRequiresIPhoneOS</key>

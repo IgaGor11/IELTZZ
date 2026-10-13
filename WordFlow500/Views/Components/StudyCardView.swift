@@ -62,6 +62,8 @@ struct StudyCardView: View {
 
     var body: some View {
         VStack(spacing: 22) {
+            sessionProgress
+
             prompt
 
             if canPractice {
@@ -76,6 +78,10 @@ struct StudyCardView: View {
                     UsageExamplesView(wordID: word.id)
                 }
                 .transition(.move(edge: .top).combined(with: .opacity))
+                .rotation3DEffect(
+                    .degrees(session.isAnswerRevealed ? 360 : 270),
+                    axis: (x: 0, y: 1, z: 0)
+                )
             }
 
             if canPractice {
@@ -296,41 +302,88 @@ struct StudyCardView: View {
         .background(.quaternary.opacity(0.45), in: RoundedRectangle(cornerRadius: 18, style: .continuous))
     }
 
+    /// Тонкая полоска прогресса сессии: 12/50.
+    private var sessionProgress: some View {
+        VStack(spacing: 4) {
+            ProgressView(
+                value: Double(session.displayedPosition),
+                total: Double(max(session.totalCount, 1))
+            )
+            .tint(AppTheme.tint)
+            Text("\(session.displayedPosition)/\(session.totalCount)")
+                .font(.caption2.monospacedDigit())
+                .foregroundStyle(.secondary)
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Прогресс сессии \(session.displayedPosition) из \(session.totalCount)")
+    }
+
+    /// Две огромные кнопки: НЕ ЗНАЮ (красная) и ПРОВЕРИТЬ (зелёная).
+    /// ПРОВЕРИТЬ переворачивает карточку и спрашивает «Я угадал / Я ошибся».
     private var selfAssessmentControls: some View {
         VStack(spacing: 10) {
             if session.isLocked {
                 Button(action: onContinue) {
                     Label("Следующее слово", systemImage: "arrow.right")
                         .frame(maxWidth: .infinity)
+                        .frame(minHeight: 56)
                 }
                 .buttonStyle(.borderedProminent)
                 .accessibilityIdentifier("continueButton")
-            } else {
+            } else if session.awaitingConfirmation {
                 HStack(spacing: 10) {
                     Button(action: onDontKnow) {
-                        Label("Не знаю", systemImage: "xmark")
+                        Label("Я ошибся", systemImage: "xmark")
                             .frame(maxWidth: .infinity)
+                            .frame(minHeight: 64)
                     }
                     .buttonStyle(.bordered)
                     .tint(AppTheme.error)
-                    .accessibilityIdentifier("dontKnowButton")
+                    .accessibilityIdentifier("confirmNoButton")
 
                     Button(action: onKnow) {
-                        Label("Знаю", systemImage: "checkmark")
+                        Label("Я угадал", systemImage: "checkmark")
                             .frame(maxWidth: .infinity)
+                            .frame(minHeight: 64)
                     }
                     .buttonStyle(.borderedProminent)
                     .tint(AppTheme.success)
-                    .accessibilityIdentifier("knowButton")
+                    .accessibilityIdentifier("confirmYesButton")
                 }
-
-                Button {
-                    session.showAnswer(for: word, mode: settings.studyMode)
-                } label: {
-                    Label("Показать ответ", systemImage: "eye")
+            } else if settings.studyMode == .multipleChoice {
+                Button(action: onDontKnow) {
+                    Label("НЕ ЗНАЮ", systemImage: "xmark")
                         .frame(maxWidth: .infinity)
+                        .frame(minHeight: 64)
                 }
                 .buttonStyle(.bordered)
+                .tint(AppTheme.error)
+                .accessibilityIdentifier("dontKnowButton")
+            } else {
+                HStack(spacing: 10) {
+                    Button(action: onDontKnow) {
+                        Label("НЕ ЗНАЮ", systemImage: "xmark")
+                            .frame(maxWidth: .infinity)
+                            .frame(minHeight: 76)
+                    }
+                    .buttonStyle(.bordered)
+                    .tint(AppTheme.error)
+                    .font(.headline)
+                    .accessibilityIdentifier("dontKnowButton")
+
+                    Button {
+                        focusedField = nil
+                        session.revealForConfirmation(word: word, mode: settings.studyMode)
+                    } label: {
+                        Label("ПРОВЕРИТЬ", systemImage: "checkmark")
+                            .frame(maxWidth: .infinity)
+                            .frame(minHeight: 76)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .tint(AppTheme.success)
+                    .font(.headline)
+                    .accessibilityIdentifier("checkButton")
+                }
             }
         }
     }

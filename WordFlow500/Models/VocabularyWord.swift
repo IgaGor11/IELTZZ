@@ -14,6 +14,27 @@ struct VocabularyWord: Identifiable, Codable, Hashable, Sendable {
     var isDifficult: Bool
     var lastPracticeDate: Date?
     var mistakeHistory: [MistakeRecord]?
+    // AI-обогащение (синонимы, коллокации, регистр, тема, примеры)
+    var synonyms: [String]?
+    var collocations: [String]?
+    var registerTags: [String]?
+    var topic: String?
+    var aiExamples: [String]?
+    var isAIEnriched: Bool
+    // Адаптивный SRS (уровни 0...10)
+    var easeFactor: Double
+    var intervalDays: Int
+    var repetitions: Int
+    var lapses: Int
+    // История попыток: скорость, точность, режим
+    var attempts: [AttemptRecord]?
+    var difficultScore: Double
+    var learnerCorrectStreak: Int
+    // Контекст: сколько корректных предложений составил пользователь
+    var contextSentencesOK: Int
+    // Surprise Test для выученных (Ур. 10)
+    var lastSurpriseDate: Date?
+    var masteredAt: Date?
 
     init(
         id: Int,
@@ -28,7 +49,23 @@ struct VocabularyWord: Identifiable, Codable, Hashable, Sendable {
         incorrectCount: Int = 0,
         isDifficult: Bool = false,
         lastPracticeDate: Date? = nil,
-        mistakeHistory: [MistakeRecord]? = nil
+        mistakeHistory: [MistakeRecord]? = nil,
+        synonyms: [String]? = nil,
+        collocations: [String]? = nil,
+        registerTags: [String]? = nil,
+        topic: String? = nil,
+        aiExamples: [String]? = nil,
+        isAIEnriched: Bool = false,
+        easeFactor: Double = 2.5,
+        intervalDays: Int = 0,
+        repetitions: Int = 0,
+        lapses: Int = 0,
+        attempts: [AttemptRecord]? = nil,
+        difficultScore: Double = 0,
+        learnerCorrectStreak: Int = 0,
+        contextSentencesOK: Int = 0,
+        lastSurpriseDate: Date? = nil,
+        masteredAt: Date? = nil
     ) {
         self.id = id
         self.word = word
@@ -43,6 +80,22 @@ struct VocabularyWord: Identifiable, Codable, Hashable, Sendable {
         self.isDifficult = isDifficult
         self.lastPracticeDate = lastPracticeDate
         self.mistakeHistory = mistakeHistory
+        self.synonyms = synonyms
+        self.collocations = collocations
+        self.registerTags = registerTags
+        self.topic = topic
+        self.aiExamples = aiExamples
+        self.isAIEnriched = isAIEnriched
+        self.easeFactor = easeFactor
+        self.intervalDays = intervalDays
+        self.repetitions = repetitions
+        self.lapses = lapses
+        self.attempts = attempts
+        self.difficultScore = difficultScore
+        self.learnerCorrectStreak = learnerCorrectStreak
+        self.contextSentencesOK = contextSentencesOK
+        self.lastSurpriseDate = lastSurpriseDate
+        self.masteredAt = masteredAt
     }
 
     var trimmedTranslation: String {

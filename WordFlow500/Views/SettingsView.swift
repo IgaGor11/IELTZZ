@@ -29,7 +29,7 @@ private struct SettingsContent: View {
         Form {
             Section("Обучение") {
                 Picker("Режим", selection: $settings.studyMode) {
-                    ForEach(StudyMode.allCases) { mode in
+                    ForEach(StudyMode.allCases.filter { $0 != .spelling }) { mode in
                         Text(mode.title).tag(mode)
                     }
                 }

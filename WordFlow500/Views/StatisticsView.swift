@@ -12,6 +12,10 @@ struct StatisticsView: View {
                 VStack(alignment: .leading, spacing: 20) {
                     StatisticsDashboard(statistics: store.statistics())
 
+                    bandCard
+
+                    forgettingCard
+
                     accuracyCard
 
                     if !hardestWords.isEmpty {
@@ -68,8 +72,55 @@ struct StatisticsView: View {
             .map { $0 }
     }
 
+    private var bandCard: some View {
+        let mastered = store.masteredWords.count
+        let band = Mastery.bandProgress(masteredCount: mastered)
+        return VStack(alignment: .leading, spacing: 12) {
+            Label("IELTS Band", systemImage: "trophy.fill")
+                .font(.headline)
+
+            HStack(alignment: .firstTextBaseline) {
+                Text(String(format: "Band %.1f", band.current))
+                    .font(.largeTitle.bold())
+                    .monospacedDigit()
+                Spacer()
+                Text("\(mastered) выучено • дальше \(String(format: "%.1f", band.next))")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+
+            ProgressView(value: band.progress, total: 1)
+                .tint(.yellow)
+
+            Text("Каждые 100 слов уровня 10 — +1.0 к Band.")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
+        .glassCard(padding: 18)
+        .accessibilityElement(children: .combine)
+    }
+
+    private var forgettingCard: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Label("Кривая забывания", systemImage: "chart.line.downtrend.xyaxis")
+                .font(.headline)
+
+            ForgettingCurveChart(points: ForgettingCurve.points(for: store.words))
+                .frame(height: 120)
+
+            Text("Средняя удерживаемость слов через 30 дней.")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
+        .glassCard(padding: 18)
+    }
+
     private var accuracyCard: some View {
         let statistics = store.statistics()
+        return accuracyCardBody(statistics: statistics)
+    }
+
+    private func accuracyCardBody(statistics: LearningStatistics) -> some View {
         return VStack(alignment: .leading, spacing: 12) {
             Label("Ответы", systemImage: "scope")
                 .font(.headline)
@@ -96,5 +147,29 @@ struct StatisticsView: View {
             .font(.caption.weight(.semibold))
         }
         .glassCard(padding: 18)
+    }
+}
+
+private struct ForgettingCurveChart: View {
+    let points: [(day: Int, retention: Double)]
+
+    var body: some View {
+        GeometryReader { geometry in
+            let maxDay = Double(points.map { $0.day }.max() ?? 1)
+            Path { path in
+                for (index, point) in points.enumerated() {
+                    let x = geometry.size.width * Double(point.day) / max(maxDay, 1)
+                    let y = geometry.size.height * (1 - point.retention)
+                    if index == 0 {
+                        path.move(to: CGPoint(x: x, y: y))
+                    } else {
+                        path.addLine(to: CGPoint(x: x, y: y))
+                    }
+                }
+            }
+            .stroke(AppTheme.tint, lineWidth: 2.5)
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Кривая забывания")
     }
 }

@@ -4,6 +4,7 @@ import Observation
 enum AppTab: Hashable, Sendable {
     case study
     case words
+    case booster
     case statistics
 }
 

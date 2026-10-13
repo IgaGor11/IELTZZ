@@ -10,6 +10,16 @@ struct WordListView: View {
     @State private var presentedSheet: WordListSheet?
     @State private var wordPendingDeletion: VocabularyWord?
     @State private var deletionError: String?
+    @State private var statusFilter: WordStatusFilter = .all
+
+    private enum WordStatusFilter: String, CaseIterable, Identifiable {
+        case all = "Все"
+        case learning = "В процессе"
+        case mastered = "Выученные"
+        case problem = "Проблемные"
+
+        var id: String { rawValue }
+    }
 
     init(
         store: VocabularyStore,
@@ -32,6 +42,14 @@ struct WordListView: View {
                 )
                 .pickerStyle(.menu)
                 .accessibilityIdentifier("wordListPicker")
+
+                Picker("Статус", selection: $statusFilter) {
+                    ForEach(WordStatusFilter.allCases) { filter in
+                        Text(filter.rawValue).tag(filter)
+                    }
+                }
+                .pickerStyle(.segmented)
+                .accessibilityIdentifier("wordStatusFilter")
             }
 
             Section("\(filteredWords.count) слов") {
@@ -80,6 +98,13 @@ struct WordListView: View {
                     }
 
                     Divider()
+
+                    ShareLink(
+                        item: AnkiExport.tsv(for: filteredWords)
+                    ) {
+                        Label("Выгрузить для Anki", systemImage: "square.and.arrow.up")
+                    }
+                    .accessibilityIdentifier("ankiExportButton")
 
                     Button {
                         presentedSheet = .manageLists
@@ -187,9 +212,20 @@ struct WordListView: View {
         let listWords = store.words.filter {
             settings.selectedList == 0 || $0.listNumber == settings.selectedList
         }
+        let statusWords: [VocabularyWord]
+        switch statusFilter {
+        case .all:
+            statusWords = listWords
+        case .learning:
+            statusWords = listWords.filter { $0.level > 0 && $0.level < Mastery.masteredLevel }
+        case .mastered:
+            statusWords = listWords.filter(Mastery.isMastered)
+        case .problem:
+            statusWords = listWords.filter(DifficultyModel.isProblem)
+        }
         let query = AnswerMatcher.normalized(searchText)
-        guard !query.isEmpty else { return listWords }
-        return listWords.filter {
+        guard !query.isEmpty else { return statusWords }
+        return statusWords.filter {
             AnswerMatcher.normalized($0.word).contains(query)
                 || AnswerMatcher.normalized($0.translation).contains(query)
         }
@@ -229,10 +265,12 @@ private struct WordRow: View {
             Spacer()
 
             VStack(alignment: .trailing, spacing: 4) {
-                Text("Ур. \(word.level)")
+                Text(Mastery.isMastered(word) ? "Ур. 10 ✓" : "Ур. \(word.level)")
                     .font(.caption.weight(.semibold))
                     .foregroundStyle(
-                        word.level >= 3 ? AppTheme.success : AppTheme.tint
+                        Mastery.isMastered(word)
+                            ? .yellow
+                            : (word.level >= 7 ? AppTheme.success : AppTheme.tint)
                     )
                 Text(listName)
                     .font(.caption2)

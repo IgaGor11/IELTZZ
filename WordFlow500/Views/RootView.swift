@@ -42,6 +42,15 @@ struct RootView: View {
             .accessibilityIdentifier("wordsTab")
 
             NavigationStack {
+                BoosterView(store: coordinator.store, speech: coordinator.speech)
+            }
+            .tabItem {
+                Label("Бустер", systemImage: "bolt.fill")
+            }
+            .tag(AppTab.booster)
+            .accessibilityIdentifier("boosterTab")
+
+            NavigationStack {
                 StatisticsView(store: coordinator.store)
                     .navigationDestination(for: AppRoute.self) {
                         destination(for: $0)

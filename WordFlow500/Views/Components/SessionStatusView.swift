@@ -21,14 +21,14 @@ struct SessionStatusView: View {
 
             VStack(spacing: 7) {
                 HStack {
-                    Text("Уровень \(word.level) из 5")
+                    Text("Уровень \(word.level) из \(Mastery.maxLevel)")
                     Spacer()
                     Text("✓ \(word.correctCount)   ✕ \(word.incorrectCount)")
                 }
                 .font(.caption)
                 .foregroundStyle(.secondary)
 
-                ProgressView(value: Double(word.level), total: 5)
+                ProgressView(value: Double(word.level), total: Double(Mastery.maxLevel))
                     .tint(levelColor)
 
                 if session.mistakesThisSession > 0 {
@@ -68,6 +68,7 @@ struct SessionStatusView: View {
     }
 
     private var levelColor: Color {
-        word.level >= 3 ? AppTheme.success : AppTheme.tint
+        if word.level >= Mastery.masteredLevel { return .yellow }
+        return word.level >= 7 ? AppTheme.success : AppTheme.tint
     }
 }

@@ -11,6 +11,9 @@ struct AddWordView: View {
     @State private var example = ""
     @State private var listID: Int
     @State private var issue: VocabularyIssue?
+    @State private var isSmartLoading = false
+    @State private var smartMessage: String?
+    @State private var enricher = AIEnricher()
 
     init(store: VocabularyStore, initialListID: Int? = nil) {
         self.store = store
@@ -44,6 +47,31 @@ struct AddWordView: View {
                     lists: store.lists,
                     includesAll: false
                 )
+            }
+
+            Section {
+                Button {
+                    Task { await smartFill() }
+                } label: {
+                    Label(
+                        isSmartLoading ? "Нейросеть думает…" : "✨ Заполнить через AI",
+                        systemImage: "sparkles"
+                    )
+                    .frame(maxWidth: .infinity)
+                }
+                .disabled(
+                    english.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                        || isSmartLoading
+                )
+                .accessibilityIdentifier("smartFillButton")
+
+                if let smartMessage {
+                    Text(smartMessage)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            } footer: {
+                Text("AI подберёт перевод, синонимы и примеры. Бесплатно, через прокси.")
             }
         }
         .navigationTitle("Добавить слово")
@@ -89,6 +117,32 @@ struct AddWordView: View {
         } catch {
             issue = VocabularyIssue(error.localizedDescription)
         }
+    }
+
+    private func smartFill() async {
+        let raw = english.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !raw.isEmpty else { return }
+        isSmartLoading = true
+        smartMessage = nil
+        defer { isSmartLoading = false }
+        guard let card = await enricher.smartCard(rawWord: raw) else {
+            smartMessage = "Нет соединения с нейросетью. Заполните вручную — это бесплатно."
+            return
+        }
+        if translation.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            translation = card.translation ?? card.explanation ?? ""
+        }
+        if example.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            example = card.examples?.first ?? ""
+        }
+        var notes: [String] = []
+        if let synonyms = card.synonyms, !synonyms.isEmpty {
+            notes.append("Синонимы: " + synonyms.prefix(5).joined(separator: ", "))
+        }
+        if let collocations = card.collocations, !collocations.isEmpty {
+            notes.append("Коллокации: " + collocations.prefix(3).joined(separator: "; "))
+        }
+        smartMessage = notes.isEmpty ? "Готово. Проверьте поля." : notes.joined(separator: "\n")
     }
 }
 

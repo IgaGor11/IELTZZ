@@ -26,12 +26,16 @@ final class WordFlow500UITests: XCTestCase {
         )
         XCTAssertFalse(app.staticTexts["Всего"].exists)
 
-        let knowButton = app.buttons["knowButton"]
-        XCTAssertTrue(knowButton.waitForExistence(timeout: 3))
-        knowButton.tap()
+        let checkButton = app.buttons["checkButton"]
+        XCTAssertTrue(checkButton.waitForExistence(timeout: 3))
+        checkButton.tap()
+
+        let confirmYesButton = app.buttons["confirmYesButton"]
+        XCTAssertTrue(confirmYesButton.waitForExistence(timeout: 3))
 
         let continueButton = app.buttons["continueButton"]
         let examples = app.descendants(matching: .any)["usageExamples"]
+        confirmYesButton.tap()
         XCTAssertTrue(continueButton.waitForExistence(timeout: 3))
         XCTAssertTrue(examples.waitForExistence(timeout: 3))
 
@@ -45,7 +49,7 @@ final class WordFlow500UITests: XCTestCase {
         XCTAssertTrue(firstCardAnswer.exists)
 
         continueButton.tap()
-        XCTAssertTrue(app.buttons["knowButton"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.buttons["checkButton"].waitForExistence(timeout: 3))
 
         let disclosure = app.descendants(matching: .any)[
             "cardExtrasDisclosure"

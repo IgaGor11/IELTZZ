@@ -31,6 +31,8 @@ final class StudySession {
     private(set) var correctedMistakesThisSession = 0
     var typedAnswer = ""
     var isAnswerRevealed = false
+    /// Карточка перевёрнута для самопроверки: ждём «Я угадал / Я ошибся».
+    var awaitingConfirmation = false
     var feedback = StudyFeedback(
         text: "Начните с ответа или оцените себя вручную.",
         tone: .neutral
@@ -90,12 +92,19 @@ final class StudySession {
 
     func showAnswer(for word: VocabularyWord, mode: StudyMode) {
         guard !isLocked else { return }
+        revealForConfirmation(word: word, mode: mode)
+    }
+
+    /// Перевернуть карточку и спросить подтверждение «Я угадал / Я ошибся».
+    func revealForConfirmation(word: VocabularyWord, mode: StudyMode) {
+        guard !isLocked else { return }
         isAnswerRevealed = true
+        awaitingConfirmation = true
         let answer = mode == .wordToTranslation || mode == .multipleChoice
             ? word.trimmedTranslation
             : word.word
         feedback = StudyFeedback(
-            text: answer.isEmpty ? "Сначала добавьте перевод." : "Ответ: \(answer)",
+            text: answer.isEmpty ? "Сначала добавьте перевод." : "Сверьтесь с ответом и оцените себя.",
             tone: .neutral
         )
     }
@@ -190,6 +199,7 @@ final class StudySession {
         guard !isLocked else { return }
         isLocked = true
         isAnswerRevealed = true
+        awaitingConfirmation = false
         let correctedPreviousMistake =
             isCorrect && mistakesAwaitingCorrection.remove(word.id) != nil
         if correctedPreviousMistake {
@@ -272,6 +282,7 @@ final class StudySession {
         typedAnswer = ""
         selectedOptionID = nil
         isLocked = false
+        awaitingConfirmation = false
         isAnswerRevealed = settings.automaticallyShowsAnswer && settings.studyMode != .multipleChoice
         feedback = StudyFeedback(
             text: settings.onlyDifficult

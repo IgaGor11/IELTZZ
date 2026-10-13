@@ -15,6 +15,9 @@ struct WordEditorView: View {
     @State private var presentedSheet: SheetDestination?
     @State private var issueMessage: String?
     @State private var showsDeleteConfirmation = false
+    @State private var isEnriching = false
+    @State private var enrichMessage: String?
+    @State private var enricher = AIEnricher()
     @FocusState private var focusedField: Field?
 
     private enum Field {
@@ -126,6 +129,38 @@ struct WordEditorView: View {
                 }
             }
 
+            Section("Нейросеть") {
+                if let synonyms = word.synonyms, !synonyms.isEmpty {
+                    LabeledContent("Синонимы", value: synonyms.prefix(6).joined(separator: ", "))
+                }
+                if let collocations = word.collocations, !collocations.isEmpty {
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text("Коллокации")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                        ForEach(Array(collocations.prefix(3)), id: \.self) { item in
+                            Text("• \(item)")
+                                .font(.subheadline)
+                        }
+                    }
+                }
+                Button {
+                    Task { await enrichWord() }
+                } label: {
+                    Label(
+                        isEnriching ? "Нейросеть думает…" : "✨ Обогатить через AI",
+                        systemImage: "sparkles"
+                    )
+                }
+                .disabled(isEnriching)
+                .accessibilityIdentifier("enrichButton")
+                if let enrichMessage {
+                    Text(enrichMessage)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            }
+
             if !word.recentMistakes.isEmpty {
                 Section("Последние ошибки") {
                     ForEach(word.recentMistakes.reversed()) { mistake in
@@ -228,6 +263,18 @@ struct WordEditorView: View {
             return "не запланировано"
         }
         return date.formatted(date: .abbreviated, time: .omitted)
+    }
+
+    private func enrichWord() async {
+        isEnriching = true
+        enrichMessage = nil
+        defer { isEnriching = false }
+        guard let enrichment = await enricher.enrich(word: word.word, translation: word.translation) else {
+            enrichMessage = "Нет соединения с нейросетью. База работает офлайн."
+            return
+        }
+        store.applyEnrichment(enrichment, for: word.id)
+        enrichMessage = "Готово: синонимы и коллокации добавлены."
     }
 
     private func saveEdits(showError: Bool) {

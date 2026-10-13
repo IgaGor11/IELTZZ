@@ -343,18 +343,74 @@ final class VocabularyStore {
         isCorrect: Bool,
         submittedAnswer: String? = nil,
         mode: StudyMode = .wordToTranslation,
+        latency: TimeInterval = 0,
         on date: Date = Date(),
         calendar: Calendar = .current
     ) {
         mutateWord(id: id) { word in
+            // Surprise Test: выученное слово на проверке
+            if word.level >= Mastery.masteredLevel,
+               SurpriseTest.shouldSurprise(word: word, on: date, calendar: calendar)
+            {
+                if isCorrect {
+                    SurpriseTest.markRechecked(&word, on: date, calendar: calendar)
+                } else {
+                    SurpriseTest.applySurprise(to: &word, on: date, calendar: calendar)
+                }
+                word.lastPracticeDate = date
+                word.attempts = Array(
+                    ((word.attempts ?? []) + [
+                        AttemptRecord(attemptedAt: date, latency: latency, correct: isCorrect, mode: mode)
+                    ]).suffix(50)
+                )
+                if isCorrect {
+                    word.correctCount += 1
+                    word.learnerCorrectStreak += 1
+                } else {
+                    word.incorrectCount += 1
+                    word.learnerCorrectStreak = 0
+                }
+                return
+            }
+
             let outcome = SpacedRepetition.outcome(
-                currentLevel: word.level,
+                currentWord: word,
                 isCorrect: isCorrect,
                 practicedAt: date,
                 calendar: calendar
             )
-            word.level = outcome.level
+            word.attempts = Array(
+                ((word.attempts ?? []) + [
+                    AttemptRecord(attemptedAt: date, latency: latency, correct: isCorrect, mode: mode)
+                ]).suffix(50)
+            )
+            var newLevel = outcome.level
+            // Ур. 10 только при критериях mastery, иначе держим на 9
+            if newLevel >= Mastery.masteredLevel, word.masteredAt == nil {
+                var probe = word
+                probe.level = newLevel
+                if Mastery.meetsMasteryCriteria(probe, calendar: calendar) {
+                    word.masteredAt = date
+                } else {
+                    newLevel = Mastery.masteredLevel - 1
+                }
+            }
+            word.level = newLevel
             word.nextReviewDate = outcome.nextReviewDate
+            word.intervalDays = outcome.intervalDays
+            word.easeFactor = outcome.easeFactor
+            word.repetitions = outcome.repetitions
+            word.lapses = outcome.lapses
+            word.difficultScore = DifficultyModel.score(
+                attempts: word.attempts ?? [],
+                lapses: word.lapses,
+                correctStreak: word.learnerCorrectStreak
+            )
+            if isCorrect {
+                word.learnerCorrectStreak += 1
+            } else {
+                word.learnerCorrectStreak = 0
+            }
             word.lastPracticeDate = date
             if isCorrect {
                 word.correctCount += 1
@@ -390,6 +446,33 @@ final class VocabularyStore {
             }
         }
         persistMistakes(for: id)
+    }
+
+    /// Применить AI-обогащение карточки (синонимы, коллокации, тема, примеры).
+    func applyEnrichment(_ enrichment: AIWordEnrichment, for id: Int) {
+        mutateWord(id: id) { word in
+            if let synonyms = enrichment.synonyms { word.synonyms = synonyms }
+            if let collocations = enrichment.collocations { word.collocations = collocations }
+            if let registerTags = enrichment.registerTags { word.registerTags = registerTags }
+            if let topic = enrichment.topic { word.topic = topic }
+            if let aiExamples = enrichment.aiExamples { word.aiExamples = aiExamples }
+            word.isAIEnriched = true
+        }
+        save()
+    }
+
+    /// Засчитать корректное предложение пользователя (после AI-проверки).
+    func registerCorrectSentence(for id: Int) {
+        mutateWord(id: id) { $0.contextSentencesOK += 1 }
+        save()
+    }
+
+    var masteredWords: [VocabularyWord] {
+        words.filter(Mastery.isMastered)
+    }
+
+    var problemWords: [VocabularyWord] {
+        words.filter(DifficultyModel.isProblem)
     }
 
     func resetProgress() {
