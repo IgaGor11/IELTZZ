@@ -13,9 +13,8 @@ permissions:
 jobs:
   build:
     # Важно: Сборка iOS возможна только на macOS.
-    # macos-latest = Xcode 26.6, нужен для project format 70
-    # (на macos-14 стоит Xcode 15.4 -> error 74: future project file format)
-    runs-on: macos-latest
+    # macos-15: ищем стабильный Xcode 16 (26.6 крашится)
+    runs-on: macos-15
 
 
     steps:
