@@ -25,8 +25,9 @@ jobs:
 
       - name: Select Xcode version
         run: |
-          echo "=== Доступные Xcode ==="
-          ls -d /Applications/Xcode*.app 2>/dev/null || true
+          mkdir -p "$RUNNER_TEMP/build"
+          echo "=== Доступные Xcode ===" | tee "$RUNNER_TEMP/build/xcode-list.txt"
+          ls -d /Applications/Xcode*.app 2>/dev/null | tee -a "$RUNNER_TEMP/build/xcode-list.txt" || true
           # Xcode 26.6 крашится (build service crash) -> пробуем стабильный Xcode 16
           X16="$(ls -d /Applications/Xcode_16*.app 2>/dev/null | head -n 1)"
           if [ -n "$X16" ]; then
@@ -127,11 +128,13 @@ jobs:
           [ -f "$LOG_SRC" ] || echo "no log" > "$LOG_SRC"
           tail -n 120 "$LOG_SRC" > /tmp/tail.log || true
           cp "$LOG_SRC" /tmp/full.log || true
+          cp "$RUNNER_TEMP/build/xcode-list.txt" /tmp/xcode-list.txt || echo "no xcode list" > /tmp/xcode-list.txt
           git fetch origin ci-logs || true
           if git show-ref --verify --quiet refs/remotes/origin/ci-logs; then git checkout ci-logs; else git checkout --orphan ci-logs; git rm -rf . || true; fi
           cp /tmp/full.log "./build-${GITHUB_RUN_ID}.log" || true
           cp /tmp/tail.log "./build-${GITHUB_RUN_ID}-tail.log" || true
+          cp /tmp/xcode-list.txt "./xcode-${GITHUB_RUN_ID}.txt" || true
           echo "# CI logs" > README.md
-          git add "build-${GITHUB_RUN_ID}.log" "build-${GITHUB_RUN_ID}-tail.log" README.md || true
+          git add "build-${GITHUB_RUN_ID}.log" "build-${GITHUB_RUN_ID}-tail.log" "xcode-${GITHUB_RUN_ID}.txt" README.md || true
           git commit -m "ci log ${GITHUB_RUN_ID}" || true
           git push origin ci-logs || git push --set-upstream origin ci-logs
