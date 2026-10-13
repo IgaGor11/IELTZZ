@@ -27,13 +27,18 @@ jobs:
           mkdir -p "$RUNNER_TEMP/build"
           echo "=== Доступные Xcode ===" | tee "$RUNNER_TEMP/build/xcode-list.txt"
           ls -d /Applications/Xcode*.app 2>/dev/null | tee -a "$RUNNER_TEMP/build/xcode-list.txt" || true
-          # Xcode 26.6 крашится (build service crash) -> пробуем стабильный Xcode 16
-          X16="$(ls -d /Applications/Xcode_16*.app 2>/dev/null | head -n 1)"
-          if [ -n "$X16" ]; then
-            echo "Выбираю $X16"
-            sudo xcode-select -s "$X16/Contents/Developer" || true
+          # Xcode 26.6 крашится (build service crash), у Xcode 16 нет симулятора iOS 18.0
+          # -> Xcode 26.2: SDK 26.2 + рантайм есть
+          XCODE_PICK=""
+          for V in 26.2 26.1 26.0 26.3 26.4 26.5; do
+            CAND="$(ls -d /Applications/Xcode_${V}*.app 2>/dev/null | head -n 1)"
+            if [ -n "$CAND" ]; then XCODE_PICK="$CAND"; break; fi
+          done
+          if [ -n "$XCODE_PICK" ]; then
+            echo "Выбираю $XCODE_PICK"
+            sudo xcode-select -s "$XCODE_PICK/Contents/Developer" || true
           else
-            echo "Xcode 16 не найден, остаёмся на дефолтном"
+            echo "Подходящий Xcode не найден, остаёмся на дефолтном"
           fi
           xcodebuild -version
           xcrun --sdk iphoneos --show-sdk-version || true
