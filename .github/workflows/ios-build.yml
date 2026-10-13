@@ -6,6 +6,9 @@ on:
     branches: [ "main" ]
   workflow_dispatch: # Позволяет запускать сборку вручную
 
+permissions:
+  contents: write
+
 
 jobs:
   build:
