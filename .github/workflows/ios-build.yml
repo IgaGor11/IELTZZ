@@ -60,6 +60,7 @@ jobs:
               ONLY_ACTIVE_ARCH=NO \
               SKIP_INSTALL=YES \
               BUILD_LIBRARY_FOR_DISTRIBUTION=NO \
+              SWIFT_COMPILATION_MODE=singlefile \
               build CONFIGURATION_BUILD_DIR="$RUNNER_TEMP/build/unsigned" 2>&1 | tee "$RUNNER_TEMP/build/unsigned-build.log"; then
               echo "Сборка прошла на попытке $ATTEMPT"
               break
