@@ -100,3 +100,22 @@ jobs:
           name: build-log
           path: ${{ runner.temp }}/build/unsigned-build.log
           if-no-files-found: ignore
+
+      - name: Publish build log to ci-logs (only on failure)
+        if: failure()
+        run: |
+          set -e
+          git config user.name "ci-bot"
+          git config user.email "ci-bot@local"
+          LOG_SRC="$RUNNER_TEMP/build/unsigned-build.log"
+          [ -f "$LOG_SRC" ] || echo "no log" > "$LOG_SRC"
+          tail -n 120 "$LOG_SRC" > /tmp/tail.log || true
+          cp "$LOG_SRC" /tmp/full.log || true
+          git fetch origin ci-logs || true
+          if git show-ref --verify --quiet refs/remotes/origin/ci-logs; then git checkout ci-logs; else git checkout --orphan ci-logs; git rm -rf . || true; fi
+          cp /tmp/full.log "./build-${GITHUB_RUN_ID}.log" || true
+          cp /tmp/tail.log "./build-${GITHUB_RUN_ID}-tail.log" || true
+          echo "# CI logs" > README.md
+          git add "build-${GITHUB_RUN_ID}.log" "build-${GITHUB_RUN_ID}-tail.log" README.md || true
+          git commit -m "ci log ${GITHUB_RUN_ID}" || true
+          git push origin ci-logs || git push --set-upstream origin ci-logs
