@@ -41,6 +41,8 @@ jobs:
         run: |
           set -o pipefail
           mkdir -p "$RUNNER_TEMP/build"
+          # Меньше параллелизма = меньше крашей Xcode 26.6 на runner-е
+          defaults write com.apple.dt.Xcode IDEBuildOperationMaxNumberOfConcurrentCompileTasks 2 || true
           for ATTEMPT in 1 2 3; do
             echo "--- Попытка сборки $ATTEMPT из 3 ---"
             rm -rf "$RUNNER_TEMP/build/unsigned" "$RUNNER_TEMP/Payload" "$RUNNER_TEMP/build/IELTZZ-unsigned.ipa"
@@ -62,7 +64,8 @@ jobs:
               echo "Сборка прошла на попытке $ATTEMPT"
               break
             fi
-            echo "Попытка $ATTEMPT упала (часто: Xcode build system has crashed) — ждём 30 сек и повторяем"
+            echo "Попытка $ATTEMPT упала (часто: Xcode build system has crashed) — чистим DerivedData, ждём 30 сек и повторяем"
+            rm -rf ~/Library/Developer/Xcode/DerivedData/WordFlow500-* || true
             sleep 30
             if [ "$ATTEMPT" = "3" ]; then
               echo "Сборка не удалась после 3 попыток"
