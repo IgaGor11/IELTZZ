@@ -25,7 +25,16 @@ jobs:
 
       - name: Select Xcode version
         run: |
-          sudo xcode-select -s /Applications/Xcode_26.6.app/Contents/Developer 2>/dev/null || sudo xcode-select -s /Applications/Xcode.app/Contents/Developer 2>/dev/null || true
+          echo "=== Доступные Xcode ==="
+          ls -d /Applications/Xcode*.app 2>/dev/null || true
+          # Xcode 26.6 крашится (build service crash) -> пробуем стабильный Xcode 16
+          X16="$(ls -d /Applications/Xcode_16*.app 2>/dev/null | head -n 1)"
+          if [ -n "$X16" ]; then
+            echo "Выбираю $X16"
+            sudo xcode-select -s "$X16/Contents/Developer" || true
+          else
+            echo "Xcode 16 не найден, остаёмся на дефолтном"
+          fi
           xcodebuild -version
           xcrun --sdk iphoneos --show-sdk-version || true
 
